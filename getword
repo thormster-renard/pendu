@@ -1,0 +1,17 @@
+#!/bin/bash
+
+get_a_word()
+{
+    tmp=$(curl -s "https://www.motsqui.com/mots-aleatoires.php" | grep -o '<b>.*</b>' | sed "s/..b.//g" | cut --complement -c1,2,3)
+    echo $tmp
+}
+
+tmp=$(get_a_word)
+if [ ${#tmp} -ge 2 ]
+then
+    if [[ $tmp == *[A-Z]* ]];
+    then
+	word=$(echo $tmp | sed 's/^.\{1\}/\L&/')
+	echo $word > /tmp/secret
+    fi
+fi
